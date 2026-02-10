@@ -43,7 +43,7 @@ function App() {
       {/* middle section */}
       <div className="flex flex-col sm:flex-row px-2 py-3 ml-2 justify-between mr-2 gap-1.5 sm:gap-3">
         <button className="order-1 sm:order-2 py-1.5 flex sm:flex-[0.9] lg:flex-[0.58] items-center border-2 border-gray-300 rounded">
-          <img src={searchbarIcon} alt="gray search bar" className="flex justify-center ml-3 mr-2 text-black w-5 h-5" />
+          <img src={searchbarIcon} alt="gray search bar" className="flex justify-center ml-3 mr-2 text-black w-5 sm:h-5 h-6" />
           <p className="text-gray-400 text-sm">
             Search for a building...
           </p>
@@ -64,23 +64,41 @@ function App() {
         </div>
 
       </div>
+      
       {/* building grid list */}
       <div className="grid grid-cols-1 lg:grid-cols-5 sm:grid-cols-2 mx-4 mb-2 gap-4">
         {data.map((item, index) => {
           const image = item.building_file || item.building_picture
           return (
             <div key={index} style={{backgroundSize: "cover", backgroundPosition: "60% center", backgroundImage: `url(${buildingList[image as keyof typeof buildingList]})`}} className="relative h-20 sm:h-42 lg:h-75 rounded-md overflow-hidden items-center">
-              <div className="absolute right-2 top-2 bg-white py-2 px-1 md:mx-1 rounded-xl flex items-center gap-2 ">
+              <div className="absolute right-2 top-2 bg-white py-2 px-1 md:mx-1 rounded-xl sm:flex items-center gap-2 hidden">
                 <img src={greenDot} alt="green dot" className='w-1/10 ml-1'/>
                 <p className="text-black text-[11px] font-semibold">
                   {item.rooms_available} rooms available
                 </p>
               </div>
 
-              <div className="flex items-center justify-center">
+              <div className="sm:flex hidden items-center justify-center">
                 <h3 className="py-3.25 px-4 rounded-lg bg-[#ed6d00] font-semibold text-sm absolute bottom-2 text-xs text-white w-[95%]">
                   {item.name}
                 </h3>
+              </div>
+
+              {/* mobile view shadow */}
+              <div className="absolute bg-black/40 inset-0 sm:hidden" />
+
+              {/* mobile and small screen view building cards */}
+              <div className="absolute sm:hidden inset-0 flex items-center justify-center">
+                <h3 className="w-[95%] font-semibold text-white text-sm py-3 px-4">
+                  {item.name}
+                </h3>
+
+                <div className="flex bg-white py-1.5 md:px-2 px-1 rounded-xl flex w-fit items-center gap-2 mr-3 sm:mr-2">
+                  <img src={greenDot} alt="green dot" className='w-1/6 pl-0.5'/>
+                  <p className="text-black text-[11px] font-semibold">
+                    {item.rooms_available} / {item.rooms_available}
+                  </p>
+                </div>
               </div>
             </div>
           )

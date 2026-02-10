@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 
 import freeroomsIcon from '../../assets/freeRoomsLogo.png'
 import searchIcon from '../../icon-assets/search_24.png'
@@ -19,16 +19,16 @@ const Navbar = () => {
         {/* Right side */}
         <div className='flex justify-center items-center gap-2 mr-4'>
           <div className='border border-[#ed6d00] p-2 h-7/8 rounded-sm'>
-            <img src={searchIcon} alt="search logo" className='w-5 text-black'/>
+            <img src={searchIcon} alt="search logo" className='w-15 sm:w-5 text-black'/>
           </div>
           <div className='border border-[#ed6d00] bg-[#ed6d00] p-2 h-7/8 rounded-sm'>
-            <img src={gridIcon} alt="grid logo" className='w-5 text-black'/>
+            <img src={gridIcon} alt="grid logo" className='w-15 sm:w-5 text-black'/>
           </div>
           <div className='border border-[#ed6d00] p-2 h-7/8 rounded-sm'>
-            <img src={mapIcon} alt="map logo" className='w-5 text-black'/>
+            <img src={mapIcon} alt="map logo" className='w-15 sm:w-5 text-black'/>
           </div>
           <div className='border border-[#ed6d00] p-2 h-7/8 rounded-sm'>
-            <img src={darkIcon} alt="dark mode logo" className='w-5 text-black'/>
+            <img src={darkIcon} alt="dark mode logo" className='w-15 sm:w-5 text-black'/>
           </div>
         </div>
       </div>
