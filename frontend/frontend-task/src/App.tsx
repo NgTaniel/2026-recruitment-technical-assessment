@@ -13,11 +13,12 @@ import civil from "../../assets/civilBuilding.webp"
 import colombo from "../../assets/colombo.webp"
 import cse from "../../assets/cseBuilding.webp"
 
-
 // middle icons
 import searchbarIcon from "../../icon-assets/search_24dp_7A7A7A_FILL0_wght400_GRAD0_opsz24.png"
 import filterAltIcon from "../../icon-assets/filter_alt_24.png"
 import filterListIcon from "../../icon-assets/filter_list_24.png"
+
+import greenDot from "../../icon-assets/circle_24dp_4DAE53_FILL1_wght400_GRAD0_opsz24.png"
 
 function App() {
   const data = buildingData;
@@ -40,15 +41,15 @@ function App() {
       <Navbar />
 
       {/* middle section */}
-      <div className="flex flex-col sm:flex-row px-2 pt-2 pb-1 ml-2 justify-between mr-2 gap-1.5">
-        <button className="order-1 sm:order-2 py-1.5 flex flex-[0.575] items-center border-2 border-gray-300 rounded">
+      <div className="flex flex-col sm:flex-row px-2 py-3 ml-2 justify-between mr-2 gap-1.5">
+        <button className="order-1 sm:order-2 py-1.5 flex flex-[0.58] items-center border-2 border-gray-300 rounded">
           <img src={searchbarIcon} alt="gray search bar" className="flex justify-center ml-3 mr-2 text-black w-5 h-5" />
           <p className="text-gray-400">
             Search for a building...
           </p>
         </button>
         <div className="order-2 sm:order-1 sm:contents flex justify-between">
-          <button className="items-center flex py-1.5 px-5 border-2 border-[#ed6d00] rounded-lg">
+          <button className="items-center flex py-1.5 px-4 border-2 border-[#ed6d00] rounded-lg">
             <img src={filterAltIcon} alt="filter alt icon" className="w-full text-black w-1/2 h-6" />
             <p className="text-[#ed6d00] font-bold px-2 mr-2 text-sm">
               Filters
@@ -64,12 +65,23 @@ function App() {
 
       </div>
       {/* building grid list */}
-      <div className="grid grid-cols-5 mx-4 my-1">
+      <div className="grid grid-cols-5 mx-4 mb-2 gap-4">
         {data.map((item, index) => {
           const image = item.building_file || item.building_picture
           return (
-            <div key={index} style={{backgroundSize: "cover", backgroundPosition: "50% center", backgroundImage: `url(${buildingList[image as keyof typeof buildingList]})`}} className="relative h-75 rounded-md overflow-hidden items-center">
-              
+            <div key={index} style={{backgroundSize: "cover", backgroundPosition: "60% center", backgroundImage: `url(${buildingList[image as keyof typeof buildingList]})`}} className="relative h-77 rounded-md overflow-hidden items-center">
+              <div className="absolute right-2 top-2 bg-white py-2 px-1 rounded-xl flex items-center gap-2 ">
+                <img src={greenDot} alt="green dot" className='w-1/6 md:w-1/10 ml-1'/>
+                <p className="text-black text-[11px] font-semibold">
+                  {item.rooms_available} rooms available
+                </p>
+              </div>
+
+              <div className="flex items-center justify-center">
+                <h3 className="py-3.25 px-4 rounded bg-[#ed6d00] font-semibold text-sm absolute bottom-2 text-xs text-white w-[95%]">
+                  {item.name}
+                </h3>
+              </div>
             </div>
           )
         })}
