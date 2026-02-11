@@ -1,0 +1,9 @@
+How to open the project
+
+1. Git clone the repo
+
+2. cd frontend\frontend-task
+
+3. run `npm i`, since dependencies like vite and tailwindcss were used
+
+4. run `npm run dev` to run development server and open the application
