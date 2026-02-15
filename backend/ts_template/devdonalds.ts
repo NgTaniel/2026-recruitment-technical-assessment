@@ -28,6 +28,10 @@ app.use(express.json());
 // Store your recipes here!
 const cookbook: cookbookEntry[] = [];
 
+export const resetCountTest = () => {
+  cookbook.length = 0
+}
+
 // Task 1 helper (don't touch)
 app.post("/parse", (req:Request, res:Response) => {
   const { input } = req.body;
@@ -74,7 +78,11 @@ app.post("/entry", (req:Request, res:Response) => {
     return res.status(400).send("type should be an ingredient or recipe");
   }
 
-  if (cookbook.find(item => item.name.toLowerCase() === name.toLowerCase())) {
+  if (typeof name !== "string" || name === "") {
+    return res.status(400).send("invalid name");
+  }
+
+  if (cookbook.find(item => item.name === name)) {
     return res.status(400).send("item entry already exists in CookbookEntry");
   }
 
@@ -82,18 +90,19 @@ app.post("/entry", (req:Request, res:Response) => {
 
   // different bodies depending on whether they are recipe or ingredient items
   if (type === "recipe") {
-    const { requiredItems } = req.body;
+    const { requiredItems } = req.body.requiredItems;
 
-    if (!Array.isArray(requiredItems)) {
-      return res.status(400).send("invalid items array list")
-    }
+    // if (!Array.isArray(requiredItems)) {
+    //   return res.status(400).send("invalid items array list")
+    // }
 
     entry = { name, type, requiredItems } as recipe;
 
   } else if (type === "ingredient") {
-    const { cookTime } = req.body;
+    const { cookTime } = req.body.cookTime;
 
-    if (cookTime <= 0 || cookTime === null) {
+    // check again for another way
+    if (cookTime < 0) {
       return res.status(400).send("invalid cooking time D:")
     }
 

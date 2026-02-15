@@ -71,8 +71,8 @@ function App() {
           const image = item.building_file || item.building_picture
           return (
             <div key={index} style={{backgroundSize: "cover", backgroundPosition: "60% center", backgroundImage: `url(${buildingList[image as keyof typeof buildingList]})`}} className="relative h-20 sm:h-42 lg:h-76 rounded-md overflow-hidden items-center">
-              <div className="absolute right-2 top-2 bg-white py-2 px-1 md:mx-1 rounded-xl sm:flex items-center gap-2 hidden">
-                <img src={greenDot} alt="green dot" className='w-1/10 ml-1'/>
+              <div className="absolute md:right-1 sm:right-2 top-2 bg-white py-2 px-1 md:mx-1 rounded-xl sm:flex items-center gap-2 hidden">
+                <img src={greenDot} alt="green dot" className='w-1/12 ml-1.5'/>
                 <p className="text-black text-[11px] font-semibold">
                   {item.rooms_available} rooms available
                 </p>
@@ -94,7 +94,7 @@ function App() {
                 </h3>
 
                 <div className="flex bg-white py-1.5 md:px-2 px-1 rounded-xl flex w-fit items-center gap-2 mr-3 sm:mr-2">
-                  <img src={greenDot} alt="green dot" className='w-1/6 pl-0.5'/>
+                  <img src={greenDot} alt="green dot" className='w-1/5 sm:w-1/6 pl-0.5'/>
                   <p className="text-black text-[11px] font-semibold">
                     {item.rooms_available} / {item.rooms_available}
                   </p>
