@@ -51,13 +51,13 @@ function App() {
         <div className="order-2 sm:order-1 mt-1 sm:mt-0 sm:contents flex justify-between">
           <button className="items-center flex py-1.5 px-4 border-3 border-[#ed6d00] rounded-lg">
             <img src={filterAltIcon} alt="filter alt icon" className="w-full text-black w-1/2 h-5 sm:h-6 sm:w-6" />
-            <p className="text-[#ed6d00] font-bold px-2.5 mr-2 text-xs sm:text-sm">
+            <p className="text-[#ed6d00] font-bold px-2.5 mr-2 text-sm">
               Filters
             </p>
           </button>
-          <button className="order-3 items-center flex py-1.5 px-5 border-3 border-[#ed6d00] rounded-lg">
+          <button className="order-3 items-center flex py-1.5 px-7 sm:px-5 border-3 border-[#ed6d00] rounded-lg">
             <img src={filterListIcon} alt="filter list icon" className="w-full text-black w-1/2 h-6 sm:h-6 sm:w-6" />
-            <p className="text-[#ed6d00] font-bold px-2 mr-2 sm:px-4 text-xs sm:text-sm">
+            <p className="text-[#ed6d00] font-bold px-2 mr-2 sm:px-4 text-sm">
               Sort
             </p>
           </button>
@@ -93,8 +93,8 @@ function App() {
                   {item.name}
                 </h3>
 
-                <div className="flex bg-white py-1.5 md:px-2 px-1 rounded-xl flex w-fit items-center gap-2 mr-3 sm:mr-2">
-                  <img src={greenDot} alt="green dot" className='w-1/5 sm:w-1/6 pl-0.5'/>
+                <div className="flex bg-white py-1.75 px-2 rounded-xl flex w-fit items-center gap-2 mr-5 sm:mr-2">
+                  <img src={greenDot} alt="green dot" className='w-[22.5%] sm:w-1/6 pl-0.5'/>
                   <p className="text-black text-[11px] font-semibold">
                     {item.rooms_available} / {item.rooms_available}
                   </p>
