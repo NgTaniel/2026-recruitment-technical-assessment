@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 // ==== Type Definitions, feel free to add or modify ==========================
 interface cookbookEntry {
   name: string;
-  type: string;
+  type: "ingredient" | "recipe";
 }
 
 interface requiredItem {
@@ -12,10 +12,12 @@ interface requiredItem {
 }
 
 interface recipe extends cookbookEntry {
+  type: "recipe";
   requiredItems: requiredItem[];
 }
 
 interface ingredient extends cookbookEntry {
+  type: "ingredient";
   cookTime: number;
 }
 
@@ -26,11 +28,7 @@ const app = express();
 app.use(express.json());
 
 // Store your recipes here!
-const cookbook: cookbookEntry[] = [];
-
-export const resetCountTest = () => {
-  cookbook.length = 0
-}
+const cookbook: (recipe | ingredient)[] = [];
 
 // Task 1 helper (don't touch)
 app.post("/parse", (req:Request, res:Response) => {
@@ -78,7 +76,7 @@ app.post("/entry", (req:Request, res:Response) => {
     return res.status(400).send("type should be an ingredient or recipe");
   }
 
-  if (typeof name !== "string" || name === "") {
+  if (name === null || name === "") {
     return res.status(400).send("invalid name");
   }
 
@@ -86,23 +84,23 @@ app.post("/entry", (req:Request, res:Response) => {
     return res.status(400).send("item entry already exists in CookbookEntry");
   }
 
-  let entry: cookbookEntry;
+  let entry;
 
   // different bodies depending on whether they are recipe or ingredient items
   if (type === "recipe") {
-    const { requiredItems } = req.body.requiredItems;
+    const { requiredItems } = req.body;
 
-    // if (!Array.isArray(requiredItems)) {
-    //   return res.status(400).send("invalid items array list")
-    // }
+    if (!Array.isArray(requiredItems)) {
+      return res.status(400).send("invalid items array list")
+    }
 
     entry = { name, type, requiredItems } as recipe;
 
   } else if (type === "ingredient") {
-    const { cookTime } = req.body.cookTime;
+    const { cookTime } = req.body;
 
     // check again for another way
-    if (cookTime < 0) {
+    if (cookTime < 0 || cookTime === null) {
       return res.status(400).send("invalid cooking time D:")
     }
 
@@ -117,10 +115,70 @@ app.post("/entry", (req:Request, res:Response) => {
 
 // [TASK 3] ====================================================================
 // Endpoint that returns a summary of a recipe that corresponds to a query name
-app.get("/summary", (req:Request, res:Request) => {
-  // TODO: implement me
-  res.status(500).send("not yet implemented!")
+app.get("/summary", (req:Request, res:Response) => {
+  const name = req.query.name as string;
 
+  if (!name) {
+    return res.status(400).send("name query parameter required")
+  }
+
+  const findRecipe = cookbook.find(e => e.name === name);
+
+  if (!findRecipe) {
+    return res.status(400).send("invalid recipe item");
+  }
+
+  if (findRecipe.type !== "recipe") {
+    return res.status(400).send("not a recipe");
+  }
+
+  // aligns ingredient with their cooking time
+  const ingredientMap = new Map<string, number>();
+
+  const ingredientExtraction = (item: string, quantity: number) => {
+    const entry = cookbook.find(e => e.name === item);
+
+    // if (!entry) {
+    //   return res.status(400).send("invalid entry")
+    // }
+
+    if (entry.type === "ingredient") {
+      const currQuant = ingredientMap.get(entry.name) ?? 0
+      ingredientMap.set(entry.name, quantity + currQuant)
+      return
+    }
+
+    // Recursion to extract individual ingredients
+    for (const req of entry.requiredItems) {
+      ingredientExtraction(req.name, req.quantity * quantity)
+    }
+  }
+
+  try {
+    ingredientExtraction(findRecipe.name, 1);
+  } catch (error) {
+    return res.status(400).send("invalid recipe structure")
+  }
+
+  let cookingTime = 0
+
+  for (const [name, quantity] of ingredientMap.entries()) {
+    const findIngredient = cookbook.find(e => e.name === name);
+
+    // ensures that the type is an ingredient
+    if (findIngredient.type !== "ingredient") {
+      return res.status(400).send("not an ingredient type");
+    }
+
+    cookingTime += findIngredient.cookTime * quantity;
+  }
+  
+  return res.status(200).send({
+    name: findRecipe.name,
+    cookTime: cookingTime,
+    ingredients: Array.from(ingredientMap.entries()).map(([name, quantity]) => ({name, quantity})),
+  });
+  // res.status(500).send("not yet implemented!")
 });
 
 // =============================================================================
